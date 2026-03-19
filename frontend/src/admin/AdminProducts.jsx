@@ -47,7 +47,23 @@ function AdminProducts() {
   // ================= FORM HANDLERS =================
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    let newForm = { ...form, [name]: value };
+
+    // ===== AUTOMATIC PRICE CALCULATION =====
+    if (name === "offer" || name === "oldPrice") {
+      const oldPriceNum = parseFloat(newForm.oldPrice) || 0;
+      const offerMatch = newForm.offer.match(/(\d+(\.\d+)?)%/);
+      if (oldPriceNum && offerMatch) {
+        const percent = parseFloat(offerMatch[1]);
+        const newPrice = oldPriceNum - (oldPriceNum * percent) / 100;
+        newForm.price = Math.round(newPrice);
+      } else if (!offerMatch && oldPriceNum) {
+        newForm.price = oldPriceNum;
+      }
+    }
+
+    setForm(newForm);
   };
 
   const handleFileChange = async (e) => {
@@ -219,10 +235,10 @@ function AdminProducts() {
       <form onSubmit={handleSubmit} className="ap-form">
         <input type="text" name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
         <input type="text" name="shortDesc" placeholder="Short Description" value={form.shortDesc} onChange={handleChange} />
-        <input type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} />
         <input type="number" name="oldPrice" placeholder="Old Price" value={form.oldPrice} onChange={handleChange} />
+        <input type="text" name="offer" placeholder="Offer (e.g. 30%)" value={form.offer} onChange={handleChange} />
+        <input type="number" name="price" placeholder="Price (auto from offer)" value={form.price} readOnly />
         <input type="number" name="stock" placeholder="Stock" value={form.stock} onChange={handleChange} />
-        <input type="text" name="offer" placeholder="Offer" value={form.offer} onChange={handleChange} />
         <input type="number" step="0.1" name="rating" placeholder="Rating" value={form.rating} onChange={handleChange} />
         <input type="number" name="reviews" placeholder="Reviews" value={form.reviews} onChange={handleChange} />
 

@@ -428,7 +428,9 @@
     padding: 12px 15px;
     height: 110px;
   }
-
+.search-dropdown{
+  width: 420px;
+}
   /* Logo Left */
   .navbar-left {
     order: 1;
@@ -476,7 +478,9 @@
   .nav-orders span {
     display: none;
   }
-
+.search-dropdown{
+  width: 320px;
+}
   .nav-cart img {
     height: 26px;
   }

@@ -46,7 +46,31 @@ function AdminLatestProducts() {
   }, []);
 
   /* ================= FORM HANDLERS ================= */
-  const handleChange = (key, value) => setForm(prev => ({ ...prev, [key]: value }));
+  const handleChange = (key, value) => {
+    setForm(prev => {
+      let updated = { ...prev, [key]: value };
+
+      // ✅ Auto-calculate price if oldPrice or offer changes
+      if (key === "oldPrice" || key === "offer") {
+        const oldPriceNum = Number(updated.oldPrice) || 0;
+
+        // Extract number from offer string (e.g., "30% OFF")
+        let offerNum = 0;
+        if (updated.offer) {
+          const match = updated.offer.match(/\d+/);
+          offerNum = match ? Number(match[0]) : 0;
+        }
+
+        if (oldPriceNum) {
+          const finalPrice = oldPriceNum * (1 - offerNum / 100);
+          updated.price = Math.round(finalPrice * 100) / 100;
+        }
+      }
+
+      return updated;
+    });
+  };
+
   const handleFileChange = (file) => setForm(prev => ({ ...prev, imageFile: file, image: "" }));
   const resetForm = () => { setForm(emptyForm); setEditingId(null); };
 
@@ -55,7 +79,6 @@ function AdminLatestProducts() {
     e.preventDefault();
 
     const payload = new FormData();
-
     Object.keys(form).forEach(key => {
       if (key === "imageFile" && form.imageFile) payload.append("imageFile", form.imageFile);
       else if (key !== "imageFile") payload.append(key, form[key] || "");
@@ -131,12 +154,19 @@ function AdminLatestProducts() {
       <form className="admin-form" onSubmit={handleSubmit}>
         <input placeholder="Product Name" value={form.name} onChange={e => handleChange("name", e.target.value)} />
         <input placeholder="Category" value={form.category} onChange={e => handleChange("category", e.target.value)} />
-        <input type="number" placeholder="Price" value={form.price} onChange={e => handleChange("price", e.target.value)} />
+
+        {/* OLD PRICE */}
         <input type="number" placeholder="Old Price" value={form.oldPrice} onChange={e => handleChange("oldPrice", e.target.value)} />
+
+        {/* OFFER (like 30% OFF) */}
+        <input placeholder="Offer (e.g., 30% OFF)" value={form.offer} onChange={e => handleChange("offer", e.target.value)} />
+
+        {/* FINAL PRICE (auto filled) */}
+        <input type="number" placeholder="Final Price" value={form.price || ""} readOnly />
+
         <input type="number" placeholder="Stock" value={form.stock} onChange={e => handleChange("stock", e.target.value)} />
         <input type="number" step="0.1" placeholder="Rating" value={form.rating} onChange={e => handleChange("rating", e.target.value)} />
         <input type="number" placeholder="Reviews" value={form.reviews} onChange={e => handleChange("reviews", e.target.value)} />
-        <input placeholder="Offer" value={form.offer} onChange={e => handleChange("offer", e.target.value)} />
         <input placeholder="Tag" value={form.tag} onChange={e => handleChange("tag", e.target.value)} />
         <input placeholder="Short Description" value={form.shortDesc} onChange={e => handleChange("shortDesc", e.target.value)} />
 

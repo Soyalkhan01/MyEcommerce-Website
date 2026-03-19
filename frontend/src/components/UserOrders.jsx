@@ -9,7 +9,23 @@ export default function UserOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  /* ===== NEW STATES (CANCEL MODAL) ===== */
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
+
   const prevOrders = useRef([]);
+
+  /* ===== CANCEL REASONS ===== */
+  const cancelReasons = [
+    "Ordered by mistake",
+    "Found cheaper elsewhere",
+    "Delivery taking too long",
+    "Changed my mind",
+    "Wrong address selected",
+    "Other",
+  ];
 
   // ======================
   // FETCH ORDERS
@@ -66,19 +82,38 @@ export default function UserOrders() {
   }, []);
 
   // ======================
-  // CANCEL ORDER
+  // OPEN CANCEL MODAL
   // ======================
-  const cancelOrder = async (orderId) => {
-    if (!window.confirm("Are you sure you want to cancel this order?"))
-      return;
+  const cancelOrder = (orderId) => {
+    setSelectedOrderId(orderId);
+    setShowCancelModal(true);
+  };
 
+  // ======================
+  // CONFIRM CANCEL
+  // ======================
+  const confirmCancelOrder = async () => {
+let finalReason = cancelReason;
+
+if (!cancelReason) {
+  alert("Please select a reason");
+  return;
+}
+
+if (cancelReason === "Other") {
+  if (!customReason.trim()) {
+    alert("Please enter your reason");
+    return;
+  }
+  finalReason = customReason;
+}
     try {
       const res = await fetch(
-        `${BASE_URL}/cancel-order/${orderId}`,
+        `${BASE_URL}/cancel-order/${selectedOrderId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-        }
+body: JSON.stringify({ reason: finalReason }),        }
       );
 
       const data = await res.json();
@@ -86,12 +121,18 @@ export default function UserOrders() {
       if (data.success) {
         setOrders((prev) =>
           prev.map((o) =>
-            String(o._id) === String(orderId)
-              ? { ...o, status: "Cancelled" }
+            String(o._id) === String(selectedOrderId)
+              ? {
+                  ...o,
+                  status: "User Cancelled",
+cancelReason: finalReason,                }
               : o
           )
         );
       }
+
+      setShowCancelModal(false);
+      setCancelReason("");
     } catch {
       alert("Server not responding");
     }
@@ -118,32 +159,28 @@ export default function UserOrders() {
       <div className="orders-scroll-area">
         <div className="my-orders-page">
 
-          {/* LOADING */}
           {loading && (
             <div className="center-message">
               Loading your orders...
             </div>
           )}
 
-          {/* NO ORDERS */}
           {!loading && orders.length === 0 && (
             <div className="center-message">
               No orders yet
             </div>
           )}
 
-          {/* ORDERS EXIST */}
           {!loading && orders.length > 0 && (
             <>
-              {/* HEADING */}
               <h2 className="orders-title">My Orders</h2>
 
-              {/* ORDER COUNT */}
               <p className="total-orders">
                 Total Orders: <strong>{orders.length}</strong>
               </p>
 
               {orders.map((order) => {
+
                 const totalAmount = order.items.reduce(
                   (acc, item) => acc + item.price * item.quantity,
                   0
@@ -174,9 +211,7 @@ export default function UserOrders() {
                       <h4>Order #{order._id}</h4>
 
                       <div className="order-actions">
-                        <span
-                          className={`status ${order.status.toLowerCase()}`}
-                        >
+                        <span className={`status ${order.status.toLowerCase()}`}>
                           {order.status}
                         </span>
 
@@ -234,9 +269,7 @@ export default function UserOrders() {
                             <div key={index} className="tracking-step">
                               <div
                                 className={`circle ${
-                                  index <= currentIndex
-                                    ? "active"
-                                    : ""
+                                  index <= currentIndex ? "active" : ""
                                 }`}
                               >
                                 {index < currentIndex ? "✓" : ""}
@@ -245,9 +278,7 @@ export default function UserOrders() {
                               {index !== trackingSteps.length - 1 && (
                                 <div
                                   className={`line ${
-                                    index < currentIndex
-                                      ? "active"
-                                      : ""
+                                    index < currentIndex ? "active" : ""
                                   }`}
                                 />
                               )}
@@ -276,8 +307,9 @@ export default function UserOrders() {
                         <span>Name</span>
                         <span>Qty</span>
                         <span>Price</span>
-                        <span>Total</span>
                         <span>Offer</span>
+                         <span>Total</span>
+
                       </div>
 
                       {order.items.map((item, idx) => (
@@ -294,10 +326,16 @@ export default function UserOrders() {
                           <span>{item.quantity}</span>
                           <span>₹{item.price}</span>
                           <span>
-                            ₹{item.price * item.quantity}
-                          </span>
-                          <span>{item.offer || "-"}</span>
-                        </div>
+  {item.offer && item.offer !== ""
+    ? item.offer
+    : item.offerPercentage > 0
+    ? `${item.offerPercentage}% OFF`
+    : item.discount > 0
+    ? `₹${item.discount} OFF`
+    : "-"}
+</span>   
+                          <span>₹{item.price * item.quantity}</span>
+                     </div>
                       ))}
                     </div>
 
@@ -309,6 +347,56 @@ export default function UserOrders() {
 
         </div>
       </div>
+
+      {/* ===== CANCEL MODAL ===== */}
+      {showCancelModal && (
+        <div className="cancel-modal-overlay">
+          <div className="cancel-modal">
+
+            <h3>Why are you cancelling?</h3>
+
+{cancelReasons.map((reason, i) => (
+  <label key={i} className="reason-option">
+    <input
+      type="radio"
+      name="cancelReason"
+      value={reason}
+      onChange={(e) => setCancelReason(e.target.value)}
+    />
+    {reason}
+
+    {/* ✅ OTHER INPUT FIELD */}
+    {cancelReason === "Other" && reason === "Other" && (
+      <input
+        type="text"
+        className="other-reason-input"
+        placeholder="Enter your reason..."
+        value={customReason}
+        onChange={(e) => setCustomReason(e.target.value)}
+      />
+    )}
+  </label>
+))}
+
+            <div className="modal-actions">
+              <button
+                className="cancel-btn"
+                onClick={confirmCancelOrder}
+              >
+                Confirm Cancel
+              </button>
+
+              <button
+                className="close-btn"
+                onClick={() => setShowCancelModal(false)}
+              >
+                Close
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>

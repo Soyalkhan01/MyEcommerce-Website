@@ -606,13 +606,20 @@ if (savedUser) {
           </div>
         </div>
 
-        <ul className="sidebar-menu">
-          <li onClick={() => navigate("/profile")}>Edit Profile</li>
-          <li onClick={() => navigate("/user-orders")}>
-           My Orders
-          </li>
-          <li onClick={() => navigate("/settings")}>Settings</li>
-        </ul>
+<ul className="sidebar-menu">
+  <li onClick={() => navigate("/profile")}>Edit Profile</li>
+
+  <li onClick={() => navigate("/user-orders")}>
+    My Orders
+  </li>
+
+  {/* NEW */}
+  <li onClick={() => navigate("/order-history")}>
+    Order History
+  </li>
+
+  <li onClick={() => navigate("/settings")}>Settings</li>
+</ul>
 
         <div className="sidebar-footer">
           <button className="logout-btn" onClick={handleLogout}>

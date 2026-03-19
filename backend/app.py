@@ -81,6 +81,25 @@ def get_user_orders(user_id):
         print("User orders error:", e)
         return jsonify({"error": str(e)}), 500
 
+@app.route("/order-history/<user_id>")
+def order_history(user_id):
+    orders = list(db.orders.find({"userId": user_id}))
+
+    for o in orders:
+        o["_id"] = str(o["_id"])
+
+    return jsonify(orders)
+
+@app.route("/clear-history/<user_id>", methods=["DELETE"])
+def clear_history(user_id):
+    db.orders.delete_many({"userId": user_id})
+    return jsonify({"message": "History cleared"})
+
+@app.route("/remove-history/<order_id>", methods=["DELETE"])
+def remove_history(order_id):
+    db.orders.delete_one({"_id": ObjectId(order_id)})
+    return jsonify({"message": "Removed"})
+
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -181,46 +200,42 @@ def owner_profile():
 # ============================
 # CANCEL ORDER (USER)
 # ============================
-@app.route("/cancel-order/<order_id>", methods=["GET","POST"])
+@app.route("/cancel-order/<order_id>", methods=["POST"])
 def cancel_order(order_id):
     try:
+        data = request.json
+        reason = data.get("reason", "No reason provided")
 
-        # Check valid ObjectId
         if not ObjectId.is_valid(order_id):
-            return jsonify({
-                "success": False,
-                "message": "Invalid order id"
-            }), 400
+            return jsonify({"success": False, "message": "Invalid order id"}), 400
 
         order = orders_col.find_one({"_id": ObjectId(order_id)})
 
         if not order:
-            return jsonify({
-                "success": False,
-                "message": "Order not found"
-            }), 404
+            return jsonify({"success": False, "message": "Order not found"}), 404
 
-        # Already delivered check
         if order.get("status") == "Delivered":
             return jsonify({
                 "success": False,
                 "message": "Delivered order cannot be cancelled"
             })
 
-        # Already cancelled check
-        if order.get("status") == "Cancelled":
+        if order.get("status") in ["Cancelled", "User Cancelled"]:
             return jsonify({
                 "success": False,
                 "message": "Order already cancelled"
             })
 
-        # Update status
+        # ✅ SAVE REASON ALSO
         orders_col.update_one(
             {"_id": ObjectId(order_id)},
-            {"$set": {
-                "status": "User Cancelled",
-                "cancelledAt": datetime.utcnow()
-            }}
+            {
+                "$set": {
+                    "status": "User Cancelled",
+                    "cancelReason": reason,
+                    "cancelledAt": datetime.utcnow()
+                }
+            }
         )
 
         return jsonify({
@@ -230,11 +245,8 @@ def cancel_order(order_id):
 
     except Exception as e:
         print("Cancel order error:", e)
-        return jsonify({
-            "success": False,
-            "message": "Server error"
-        }), 500
-
+        return jsonify({"success": False, "message": "Server error"}), 500
+    
 @app.route("/images/<path:filename>")
 def images(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
@@ -919,34 +931,88 @@ def admin_footer():
 # ============================
 # PLACE ORDER
 # ============================
+# ==================================
+# PLACE ORDER (FINAL WORKING VERSION)
+# ==================================
 @app.route("/orders", methods=["POST"])
 def place_order():
-    data = request.json
+    try:
+        data = request.get_json()
 
-    user_id = data.get("userId")
-    customer = data.get("customer")
-    items = data.get("items")
-    total = data.get("total")
-    date = data.get("date")
-    status = data.get("status", "Pending")
+        user_id = data.get("userId")
+        customer = data.get("customer")
+        items = data.get("items", [])
+        total = data.get("total")
 
-    if not user_id or not customer or not items or total is None:
-        return jsonify({"message": "Invalid order data"}), 400
+        if not user_id or not items:
+            return jsonify({
+                "success": False,
+                "message": "Invalid order data"
+            }), 400
 
-    order = {
-        "userId": user_id,
-        "customer": customer,
-        "items": items,
-        "total": total,
-        "date": date,
-        "status": status,
-        "createdAt": datetime.utcnow()
-    }
+        processed_items = []
 
-    result = orders_col.insert_one(order)
-    order["_id"] = str(result.inserted_id)
+        # ✅ FIX OFFER + DISCOUNT SAVE
+        for item in items:
 
-    return jsonify({"message": "Order placed successfully", "order": order})
+            offer_text = item.get("offer", "")
+
+            # extract percentage automatically
+            offer_percentage = item.get("offerPercentage", 0)
+
+            if (not offer_percentage) and "%" in str(offer_text):
+                try:
+                    offer_percentage = int(
+                        offer_text.split("%")[0]
+                    )
+                except:
+                    offer_percentage = 0
+
+            price = float(item.get("price", 0))
+            qty = int(item.get("quantity", 1))
+
+            discount = round(
+                (price * offer_percentage) / 100,
+                2
+            )
+
+            processed_items.append({
+                "id": item.get("id"),
+                "name": item.get("name"),
+                "image": item.get("image"),
+                "price": price,
+                "quantity": qty,
+
+                # ✅ IMPORTANT FIELDS
+                "offer": offer_text,
+                "offerPercentage": offer_percentage,
+                "discount": discount
+            })
+
+        order = {
+            "userId": user_id,
+            "customer": customer,
+            "items": processed_items,
+            "total": total,
+            "status": "Pending",
+            "createdAt": datetime.utcnow()
+        }
+
+        result = orders_col.insert_one(order)
+
+        order["_id"] = str(result.inserted_id)
+
+        return jsonify({
+            "success": True,
+            "order": order
+        }), 201
+
+    except Exception as e:
+        print("ORDER ERROR:", e)
+        return jsonify({
+            "success": False,
+            "message": "Failed to place order"
+        }), 500
 
 
 
@@ -983,27 +1049,27 @@ def get_orders_by_user(user_id):
 
 
 # Create order
-@app.route("/orders", methods=["POST"])
-def create_order():
+# @app.route("/orders", methods=["POST"])
+# def create_order():
 
-    data = request.json
+#     data = request.json
 
-    order = {
-        "userId": data.get("userId"),
-        "items": data.get("items", []),
-        "total": data.get("total", 0),
-        "status": "Pending",
-        "createdAt": datetime.utcnow()
-    }
+#     order = {
+#         "userId": data.get("userId"),
+#         "items": data.get("items", []),
+#         "total": data.get("total", 0),
+#         "status": "Pending",
+#         "createdAt": datetime.utcnow()
+#     }
 
-    result = orders_col.insert_one(order)
+#     result = orders_col.insert_one(order)
 
-    order["_id"] = str(result.inserted_id)
+#     order["_id"] = str(result.inserted_id)
 
-    return jsonify({
-        "message": "Order created",
-        "order": order
-    }), 201
+#     return jsonify({
+#         "message": "Order created",
+#         "order": order
+#     }), 201
 
 # PUT update order status
 @app.route("/orders/<order_id>/status", methods=["PUT"])

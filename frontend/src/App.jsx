@@ -247,6 +247,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Profile from "./components/Profile";
 import UserOrders from "./components/UserOrders";
+import OrderHistory from "./components/OrderHistory";
 import Settings from "./components/Settings";
 
 // Admin Components
@@ -400,6 +401,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/user-orders" element={<UserOrders />} />
+        <Route path="/order-history" element={<OrderHistory />} />
         <Route path="/settings" element={<Settings />} />
 
         {/* PRODUCT DETAIL */}

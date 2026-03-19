@@ -11,7 +11,7 @@ export default function AdminElectronic() {
     oldPrice: "",
     stock: "",
     images: [],
-    offer: "",
+    offer: "", // e.g., "30% OFF"
     rating: "",
     reviews: "",
     shortDesc: "",
@@ -47,7 +47,29 @@ export default function AdminElectronic() {
   // ================= FORM HANDLERS =================
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => {
+      let updated = { ...prev, [name]: value };
+
+      // ✅ Auto-calculate price if oldPrice or offer changes
+      if (name === "oldPrice" || name === "offer") {
+        const oldPriceNum = Number(updated.oldPrice) || 0;
+
+        // Extract number from offer string
+        let offerNum = 0;
+        if (updated.offer) {
+          const match = updated.offer.match(/\d+/);
+          offerNum = match ? Number(match[0]) : 0;
+        }
+
+        if (oldPriceNum) {
+          const finalPrice = oldPriceNum * (1 - offerNum / 100);
+          updated.price = Math.round(finalPrice * 100) / 100;
+        }
+      }
+
+      return updated;
+    });
   };
 
   const handleFileChange = async (e) => {
@@ -205,19 +227,37 @@ export default function AdminElectronic() {
       <form onSubmit={handleSubmit} className="ae-form">
         <input type="text" name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
         <input type="text" name="shortDesc" placeholder="Short Description" value={form.shortDesc} onChange={handleChange} />
-        <input type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} />
-        <input type="number" name="oldPrice" placeholder="Old Price" value={form.oldPrice} onChange={handleChange} />
+
+        {/* OLD PRICE */}
+        <input
+          type="number"
+          name="oldPrice"
+          placeholder="Old Price"
+          value={form.oldPrice}
+          onChange={handleChange}
+        />
+
+        {/* OFFER (like 30% OFF) */}
+        <input
+          type="text"
+          name="offer"
+          placeholder="Offer (e.g., 30% OFF)"
+          value={form.offer}
+          onChange={handleChange}
+        />
+
+        {/* FINAL PRICE (auto filled) */}
+        <input
+          type="number"
+          name="price"
+          placeholder="Final Price"
+          value={form.price ? form.price.toFixed(2) : ""}
+          readOnly
+        />
+
         <input type="number" name="stock" placeholder="Stock" value={form.stock} onChange={handleChange} />
-        <input type="text" name="offer" placeholder="Offer" value={form.offer} onChange={handleChange} />
         <input type="number" step="0.1" name="rating" placeholder="Rating" value={form.rating} onChange={handleChange} />
         <input type="number" name="reviews" placeholder="Reviews" value={form.reviews} onChange={handleChange} />
-
-        <input type="file" multiple onChange={handleFileChange} />
-        <div className="ae-web-image">
-          <input type="text" placeholder="Add image URL" value={webImage} onChange={(e) => setWebImage(e.target.value)} />
-          <button type="button" onClick={handleAddWebImage}>Add URL</button>
-        </div>
-
         <input type="text" name="brand" placeholder="Brand" value={form.brand} onChange={handleChange} />
         <input type="text" name="model" placeholder="Model" value={form.model} onChange={handleChange} />
         <input type="text" name="material" placeholder="Material" value={form.material} onChange={handleChange} />
@@ -226,10 +266,17 @@ export default function AdminElectronic() {
         <input type="text" name="sizes" placeholder="Sizes (comma separated)" value={form.sizes} onChange={handleChange} />
         <textarea name="highlights" placeholder="Highlights (comma separated)" value={form.highlights} onChange={handleChange} />
 
+        <input type="file" multiple onChange={handleFileChange} />
+        <div className="ae-web-image">
+          <input type="text" placeholder="Add image URL" value={webImage} onChange={(e) => setWebImage(e.target.value)} />
+          <button type="button" onClick={handleAddWebImage}>Add URL</button>
+        </div>
+
         <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
         {editingId && <button type="button" onClick={resetForm}>Cancel</button>}
       </form>
 
+      {/* LIST */}
       <div className="ae-list">
         {filteredElectronics.map((item) => (
           <div key={item.id} className="ae-card">
@@ -238,9 +285,12 @@ export default function AdminElectronic() {
             </div>
             <div className="ae-details">
               <h4>{item.name}</h4>
-              <p>₹{item.price} {item.oldPrice && <span className="old-price">₹{item.oldPrice}</span>}</p>
-              <p>Stock: {item.stock > 0 ? item.stock : "Out of Stock"}</p>
+              <p>
+                ₹{item.price.toFixed(2)}{" "}
+                {item.oldPrice && <span className="old-price">₹{item.oldPrice}</span>}
+              </p>
               {item.offer && <p className="inline-offer">{item.offer}</p>}
+              <p>Stock: {item.stock > 0 ? item.stock : "Out of Stock"}</p>
               {item.rating && <p>⭐ {item.rating} {item.reviews && `(${item.reviews} reviews)`}</p>}
               {item.shortDesc && <p>{item.shortDesc}</p>}
             </div>

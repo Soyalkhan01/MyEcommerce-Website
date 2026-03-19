@@ -150,7 +150,6 @@
 
 // export default OrderSummary;
 
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import StepsTracker from "./StepsTracker";
@@ -193,11 +192,11 @@ function OrderSummary() {
     return <p className="orders-empty">No order data available</p>;
   }
 
+  // ✅ PLACE ORDER
   const placeOrder = async () => {
     setLoading(true);
     setErrors({});
 
-    // ✅ GET USER ID
     const userId = localStorage.getItem("userId");
 
     if (!userId || userId === "undefined") {
@@ -206,20 +205,41 @@ function OrderSummary() {
       return;
     }
 
+    // ✅ FIXED ITEMS WITH OFFER DATA
     const orderData = {
-      userId: userId, // 🔥 important
+      userId,
       customer,
-      items: cartItems.map((item) => ({
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity || 1,
-        price: Number(item.price) || 0,
-        image: item.images?.[0] || item.image || "",
-      })),
+      items: cartItems.map((item) => {
+        const price = Number(item.price) || 0;
+        const qty = item.quantity || 1;
+
+        const offerPercentage =
+          Number(item.offerPercentage) ||
+          Number(item.discountPercentage) ||
+          0;
+
+        const discount = (price * offerPercentage) / 100;
+
+        return {
+          id: item.id,
+          name: item.name,
+          quantity: qty,
+          price,
+          image: item.images?.[0] || item.image || "",
+
+          // ✅ IMPORTANT (NOW SAVES IN MONGODB)
+          offer: item.offer || "",
+          offerPercentage: offerPercentage,
+          discount: discount,
+          total: (price - discount) * qty,
+        };
+      }),
       total: totalAmount,
       date: new Date().toISOString(),
       status: "Pending",
     };
+
+    console.log("ORDER PAYLOAD:", orderData); // debug
 
     try {
       const res = await fetch(`${BASE_URL}/orders`, {
@@ -236,7 +256,6 @@ function OrderSummary() {
 
       setConfirmed(true);
       localStorage.removeItem("cart");
-
     } catch (error) {
       console.error(error);
       setErrors({ api: "Failed to place order. Please try again." });
@@ -253,7 +272,6 @@ function OrderSummary() {
         <p>Thank you for shopping with us!</p>
         <button
           className="back-btn"
-          type="button"
           onClick={() => navigate("/")}
         >
           Back to Home
@@ -279,23 +297,17 @@ function OrderSummary() {
       <h3 className="orders-title">Review & Confirm Your Order</h3>
 
       <div className="orders-grid">
-        {/* LEFT SIDE */}
+        {/* LEFT */}
         <div className="order-card">
           <h4>Delivery Details</h4>
 
           <div className="order-details">
+            <p><strong>Name:</strong> {customer.firstName} {customer.lastName}</p>
+            <p><strong>Email:</strong> {customer.email}</p>
+            <p><strong>Phone:</strong> {customer.phone}</p>
             <p>
-              <strong>Name:</strong> {customer.firstName} {customer.lastName}
-            </p>
-            <p>
-              <strong>Email:</strong> {customer.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {customer.phone}
-            </p>
-            <p>
-              <strong>Address:</strong> {customer.address}, {customer.city},{" "}
-              {customer.state} - {customer.pincode}
+              <strong>Address:</strong> {customer.address},{" "}
+              {customer.city}, {customer.state} - {customer.pincode}
             </p>
           </div>
 
@@ -323,7 +335,7 @@ function OrderSummary() {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* RIGHT */}
         <div className="order-card">
           <h4>Order Items</h4>
 
@@ -332,16 +344,19 @@ function OrderSummary() {
 
             return (
               <div className="order-item" key={item.id || index}>
-                <img
-                  src={getImageUrl(item)}
-                  alt={item.name}
-                  loading="lazy"
-                />
+                <img src={getImageUrl(item)} alt={item.name} />
 
                 <div>
                   <p className="item-name">{item.name}</p>
                   <p>Quantity: {item.quantity}</p>
                   <p>Price: ₹{price.toFixed(2)}</p>
+
+                  {/* ✅ SHOW OFFER */}
+                  {item.offerPercentage > 0 && (
+                    <p className="offer-text">
+                      {item.offerPercentage}% OFF
+                    </p>
+                  )}
                 </div>
               </div>
             );

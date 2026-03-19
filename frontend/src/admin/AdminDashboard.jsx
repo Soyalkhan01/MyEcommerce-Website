@@ -216,26 +216,64 @@ export default function AdminDashboard() {
                   <td>{order.customer?.email || "N/A"}</td>
                   <td>{order.customer?.phone || "N/A"}</td>
                   <td className="address-cell">{order.customer?.address || "N/A"}</td>
-                  <td className="products-cell">
-                    <div className="products-list">
-                      {order.items.map((item, i) => (
-                        <div key={i} className="product-row">
-                          <img src={item.images?.[0] || item.image || "/default-product.png"} alt={item.name} className="product-thumb" />
-                          <span className="product-name">{item.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </td>
+<td className="products-cell">
+  <div className="products-list">
+    {order.items.map((item, i) => (
+      <div key={i} className="product-row">
+        <img
+          src={item.images?.[0] || item.image || "/default-product.png"}
+          alt={item.name}
+          className="product-thumb"
+        />
+        <div className="product-info">
+          <span className="product-name">{item.name}</span>
+
+          {/* Old price */}
+          {item.oldPrice && (
+            <p className="old-price">₹{item.oldPrice.toFixed(2)}</p>
+          )}
+
+          {/* Offer */}
+          {item.offer && <p className="product-offer">{item.offer}</p>}
+
+          {/* Discount */}
+          {/* {item.discount > 0 && (
+            <p className="product-discount">
+              You saved ₹{item.discount.toFixed(2)}
+            </p>
+          )} */}
+
+          {/* Final price */}
+          <p className="final-price">₹{item.price.toFixed(2)}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</td>
                   <td>{order.items.map((item) => item.quantity).join(", ")}</td>
                   <td>₹{order.total.toFixed(2)}</td>
                   <td>{new Date(order.createdAt).toLocaleString("en-IN")}</td>
 <td>
-  <span
-    className={`status-badge status-${order.status?.toLowerCase().replace(/\s/g,"-")}`}
-  >
-    {order.status === "User Cancelled" ? "User Cancelled" : order.status}
-  </span>
-</td>                  <td>
+  <div className="status-wrapper">
+
+    <span
+      className={`status-badge status-${order.status
+        ?.toLowerCase()
+        .replace(/\s/g, "-")}`}
+    >
+      {order.status}
+    </span>
+
+    {/* ✅ Show reason if user cancelled */}
+    {order.status === "User Cancelled" && order.cancelReason && (
+      <div className="cancel-reason">
+        Reason: {order.cancelReason}
+      </div>
+    )}
+
+  </div>
+</td> 
+              <td>
                     {order.status !== "Completed" && order.status !== "Shipping" && (
                       <button className="btn-shipping" onClick={() => updateOrderStatus(order._id, "Shipping")}>Shipping</button>
                     )}
