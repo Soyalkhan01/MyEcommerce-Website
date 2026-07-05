@@ -1,4 +1,4 @@
-# 🛒 Full Stack E-commerce Website
+🛒 Full Stack E-commerce Website
 
 A modern, responsive, and feature-rich Full Stack E-Commerce Website built using **React.js**, **Vite**, **Python Flask**, **MongoDB**, and **MERN Stack** This project provides a complete online shopping experience with user authentication, product management, shopping cart, and order processing.
 
