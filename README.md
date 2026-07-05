@@ -118,7 +118,7 @@ MyEcommerce-Website/
 ## Repository
 
 ```bash
-git clone https://github.com/Soyalkhan01/MyEcommerce-Website
+git https://github.com/Soyalkhan01/MyEcommerce-Website
 ```
 
 ---
