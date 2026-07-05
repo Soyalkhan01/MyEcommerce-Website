@@ -115,7 +115,7 @@ MyEcommerce-Website/
 
 # ⚙ Installation
 
-## Clone Repository
+## Repository
 
 ```bash
 git clone https://github.com/Soyalkhan01/MyEcommerce-Website
