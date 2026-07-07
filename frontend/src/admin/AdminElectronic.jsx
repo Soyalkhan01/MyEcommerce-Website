@@ -29,7 +29,6 @@ export default function AdminElectronic() {
   const [uploading, setUploading] = useState(false);
   const [webImage, setWebImage] = useState("");
 
-  // ================= FETCH ELECTRONICS =================
   const fetchElectronics = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/admin/electronics`);
@@ -44,18 +43,15 @@ export default function AdminElectronic() {
     fetchElectronics();
   }, []);
 
-  // ================= FORM HANDLERS =================
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setForm((prev) => {
       let updated = { ...prev, [name]: value };
 
-      // ✅ Auto-calculate price if oldPrice or offer changes
       if (name === "oldPrice" || name === "offer") {
         const oldPriceNum = Number(updated.oldPrice) || 0;
 
-        // Extract number from offer string
         let offerNum = 0;
         if (updated.offer) {
           const match = updated.offer.match(/\d+/);
@@ -98,7 +94,6 @@ export default function AdminElectronic() {
     setWebImage("");
   };
 
-  // ================= SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -160,7 +155,6 @@ export default function AdminElectronic() {
     setEditingId(null);
   };
 
-  // ================= EDIT / DELETE / RECOVER / PERMANENT DELETE =================
   const handleEdit = (item) => {
     setForm({
       name: item.name || "",

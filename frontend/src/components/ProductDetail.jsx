@@ -31,21 +31,21 @@ function ProductDetail({ addToCart }) {
 
     const fetchAll = async () => {
       try {
-        const resProducts = await 
-        // fetch("http://127.0.0.1:5000/products");
-                            fetch(`${BASE_URL}/products`);
+        const resProducts = await
+          // fetch("http://127.0.0.1:5000/products");
+          fetch(`${BASE_URL}/products`);
 
         const productsData = await resProducts.json();
 
-        const resLatest = await 
-        // fetch("http://127.0.0.1:5000/latestProducts");
-                            fetch(`${BASE_URL}/latestProducts`);
+        const resLatest = await
+          // fetch("http://127.0.0.1:5000/latestProducts");
+          fetch(`${BASE_URL}/latestProducts`);
 
         const latestData = await resLatest.json();
 
-        const resElectronics = await 
-        // fetch("http://127.0.0.1:5000/electronics");
-                            fetch(`${BASE_URL}/electronics`);
+        const resElectronics = await
+          // fetch("http://127.0.0.1:5000/electronics");
+          fetch(`${BASE_URL}/electronics`);
 
         const electronicsData = await resElectronics.json();
 
@@ -75,17 +75,17 @@ function ProductDetail({ addToCart }) {
   const images =
     product.images?.length > 0
       ? product.images.map((img) =>
-          img.startsWith("http")
-            ? img
-            : `http://127.0.0.1:5000/images/${img}`
-        )
+        img.startsWith("http")
+          ? img
+          : `http://127.0.0.1:5000/images/${img}`
+      )
       : product.image
-      ? [
+        ? [
           product.image.startsWith("http")
             ? product.image
             : `http://127.0.0.1:5000/images/${product.image}`,
         ]
-      : ["https://via.placeholder.com/400"];
+        : ["https://via.placeholder.com/400"];
 
   const finalPrice = product.price;       // selling price
   const originalPrice = product.oldPrice; // cut price
@@ -105,7 +105,6 @@ function ProductDetail({ addToCart }) {
     }, 2500);
   };
 
-  /* ================= ADD TO CART ================= */
   const handleAddToCart = (prod = product) => {
     const user = JSON.parse(localStorage.getItem("user")); // login check
     if (!user) {
@@ -227,7 +226,7 @@ function ProductDetail({ addToCart }) {
 
             <button
               className="pdx-add"
-onClick={() => handleAddToCart(product)}              disabled={product.stock === 0}
+              onClick={() => handleAddToCart(product)} disabled={product.stock === 0}
             >
               Add to Cart
             </button>
@@ -325,15 +324,15 @@ onClick={() => handleAddToCart(product)}              disabled={product.stock ==
       {/* Trust badges */}
       <div className="pdx-trust-badges">
         <div className="trust-badge">
-          <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Secure Payment"/>
+          <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Secure Payment" />
           <span>Secure Payment</span>
         </div>
         <div className="trust-badge">
-          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910763.png" alt="Original Product"/>
+          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910763.png" alt="Original Product" />
           <span>100% Original</span>
         </div>
         <div className="trust-badge">
-          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910765.png" alt="Support"/>
+          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910765.png" alt="Support" />
           <span>24/7 Support</span>
         </div>
       </div>
@@ -349,8 +348,8 @@ onClick={() => handleAddToCart(product)}              disabled={product.stock ==
               <div key={idx} className="pdx-review-card">
                 <div className="review-avatar">
                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#bbb" viewBox="0 0 24 24">
-                    <circle cx="12" cy="7" r="5"/>
-                    <path d="M12 14c-5 0-7 3-7 5v1h14v-1c0-2-2-5-7-5z"/>
+                    <circle cx="12" cy="7" r="5" />
+                    <path d="M12 14c-5 0-7 3-7 5v1h14v-1c0-2-2-5-7-5z" />
                   </svg>
                 </div>
                 <div className="review-content">
@@ -379,43 +378,43 @@ onClick={() => handleAddToCart(product)}              disabled={product.stock ==
         </div>
       </div>
       <div className="pdx-ads-wrapper">
-  <h3>Advertisements</h3>
-  <div className="pdx-ads-grid">
-    <div className="pdx-ad-card">
-      <a href="https://www.apple.com" target="_blank" rel="noopener noreferrer">
-        <img src="https://www.mactrast.com/wp-content/uploads/2018/12/iPhone_XR_-_Apple.jpg" alt="Apple iPhone" />
-      </a>
-    </div>
-    <div className="pdx-ad-card">
-      <a href="https://www.samsung.com" target="_blank" rel="noopener noreferrer">
-        <img src="https://i.ytimg.com/vi/_Cf_Thff044/hq720.jpg" alt="Samsung Galaxy" />
-      </a>
-    </div>
-    <div className="pdx-ad-card">
-      <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer">
-        <img src="https://news.microsoft.com/wp-content/uploads/prod/sites/45/2018/08/Surface-Family-Expansion-1600x1079.png" alt="Microsoft Surface" />
-      </a>
-    </div>
-  </div>
-</div>
+        <h3>Advertisements</h3>
+        <div className="pdx-ads-grid">
+          <div className="pdx-ad-card">
+            <a href="https://www.apple.com" target="_blank" rel="noopener noreferrer">
+              <img src="https://www.mactrast.com/wp-content/uploads/2018/12/iPhone_XR_-_Apple.jpg" alt="Apple iPhone" />
+            </a>
+          </div>
+          <div className="pdx-ad-card">
+            <a href="https://www.samsung.com" target="_blank" rel="noopener noreferrer">
+              <img src="https://i.ytimg.com/vi/_Cf_Thff044/hq720.jpg" alt="Samsung Galaxy" />
+            </a>
+          </div>
+          <div className="pdx-ad-card">
+            <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer">
+              <img src="https://news.microsoft.com/wp-content/uploads/prod/sites/45/2018/08/Surface-Family-Expansion-1600x1079.png" alt="Microsoft Surface" />
+            </a>
+          </div>
+        </div>
+      </div>
 
-<div className="pdx-social-media">
-  <h3>Share on</h3>
-  <div className="social-icons">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=YOUR_PRODUCT_URL" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
-      <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook" className="social-icon" />
-    </a>
-    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Share on Instagram">
-      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" className="social-icon" />
-    </a>
-    <a href="https://twitter.com/intent/tweet?url=YOUR_PRODUCT_URL" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" className="social-icon" />
-    </a>
-    <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PRODUCT_URL" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
-      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" className="social-icon" />
-    </a>
-  </div>
-</div>
+      <div className="pdx-social-media">
+        <h3>Share on</h3>
+        <div className="social-icons">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=YOUR_PRODUCT_URL" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
+            <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook" className="social-icon" />
+          </a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Share on Instagram">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" className="social-icon" />
+          </a>
+          <a href="https://twitter.com/intent/tweet?url=YOUR_PRODUCT_URL" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" className="social-icon" />
+          </a>
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PRODUCT_URL" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" className="social-icon" />
+          </a>
+        </div>
+      </div>
 
       {/* Related Products */}
       <div className="pdx-related">
@@ -436,53 +435,53 @@ onClick={() => handleAddToCart(product)}              disabled={product.stock ==
                 : "Out of Stock";
 
             return (
-             <div key={item.id} className="product-card" style={{ cursor: "pointer", position: "relative" }}
-  onClick={() => openProductDetailNewTab(item.id)}>
-  
-  <div className="product-badges">
-    {item.offer && <span className="pdx-badge offer">{item.offer}</span>}
-    {item.tag && item.tag.split(",").map((t, index) => (
-      <span key={index} className="pdx-badge tag">{t.trim()}</span>
-    ))}
-  </div>
+              <div key={item.id} className="product-card" style={{ cursor: "pointer", position: "relative" }}
+                onClick={() => openProductDetailNewTab(item.id)}>
 
-  <img src={imageUrl} alt={item.name}/>
-  <h3 className="product-title">{item.name}</h3>
-  <p className="product-short-desc">{item.shortDesc || "High performance with premium quality"}</p>
+                <div className="product-badges">
+                  {item.offer && <span className="pdx-badge offer">{item.offer}</span>}
+                  {item.tag && item.tag.split(",").map((t, index) => (
+                    <span key={index} className="pdx-badge tag">{t.trim()}</span>
+                  ))}
+                </div>
 
-  <div className="rating-offer-row">
-    <div className="rating-box">
-      ⭐ {item.rating || 4.3} ({item.reviews || 0} Reviews)
-      <br />
-      <span className="stock-text">{stockText}</span>
-    </div>
-  </div>
+                <img src={imageUrl} alt={item.name} />
+                <h3 className="product-title">{item.name}</h3>
+                <p className="product-short-desc">{item.shortDesc || "High performance with premium quality"}</p>
 
-  <div className="pprice-box">
-    <span className="pprice">₹{item.price}</span>
-    {item.oldPrice && item.oldPrice !== item.price && <span className="oold-price">₹{item.oldPrice}</span>}
-  </div>
+                <div className="rating-offer-row">
+                  <div className="rating-box">
+                    ⭐ {item.rating || 4.3} ({item.reviews || 0} Reviews)
+                    <br />
+                    <span className="stock-text">{stockText}</span>
+                  </div>
+                </div>
 
-  <div className="action-buttons" onClick={(e) => e.stopPropagation()}>
-    <button
-      className="buy-btn"
-      onClick={() => openProductDetailNewTab(item.id)}
-    >
-      View
-    </button>
+                <div className="pprice-box">
+                  <span className="pprice">₹{item.price}</span>
+                  {item.oldPrice && item.oldPrice !== item.price && <span className="oold-price">₹{item.oldPrice}</span>}
+                </div>
 
-    <button className="cart-btn" disabled={item.stock === 0} onClick={() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user) {
-        navigate("/login");
-        return;
-      }
-      handleAddToCart(item);
-    }}>
-      Add to Cart
-    </button>
-  </div>
-</div>
+                <div className="action-buttons" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    className="buy-btn"
+                    onClick={() => openProductDetailNewTab(item.id)}
+                  >
+                    View
+                  </button>
+
+                  <button className="cart-btn" disabled={item.stock === 0} onClick={() => {
+                    const user = JSON.parse(localStorage.getItem("user"));
+                    if (!user) {
+                      navigate("/login");
+                      return;
+                    }
+                    handleAddToCart(item);
+                  }}>
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>

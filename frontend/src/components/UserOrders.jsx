@@ -9,7 +9,6 @@ export default function UserOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  /* ===== NEW STATES (CANCEL MODAL) ===== */
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [cancelReason, setCancelReason] = useState("");
@@ -17,7 +16,6 @@ export default function UserOrders() {
 
   const prevOrders = useRef([]);
 
-  /* ===== CANCEL REASONS ===== */
   const cancelReasons = [
     "Ordered by mistake",
     "Found cheaper elsewhere",
@@ -27,9 +25,6 @@ export default function UserOrders() {
     "Other",
   ];
 
-  // ======================
-  // FETCH ORDERS
-  // ======================
   const fetchOrders = async () => {
     const userId = localStorage.getItem("userId");
 
@@ -81,9 +76,7 @@ export default function UserOrders() {
     return () => clearInterval(interval);
   }, []);
 
-  // ======================
-  // OPEN CANCEL MODAL
-  // ======================
+
   const cancelOrder = (orderId) => {
     setSelectedOrderId(orderId);
     setShowCancelModal(true);
@@ -93,27 +86,28 @@ export default function UserOrders() {
   // CONFIRM CANCEL
   // ======================
   const confirmCancelOrder = async () => {
-let finalReason = cancelReason;
+    let finalReason = cancelReason;
 
-if (!cancelReason) {
-  alert("Please select a reason");
-  return;
-}
+    if (!cancelReason) {
+      alert("Please select a reason");
+      return;
+    }
 
-if (cancelReason === "Other") {
-  if (!customReason.trim()) {
-    alert("Please enter your reason");
-    return;
-  }
-  finalReason = customReason;
-}
+    if (cancelReason === "Other") {
+      if (!customReason.trim()) {
+        alert("Please enter your reason");
+        return;
+      }
+      finalReason = customReason;
+    }
     try {
       const res = await fetch(
         `${BASE_URL}/cancel-order/${selectedOrderId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-body: JSON.stringify({ reason: finalReason }),        }
+          body: JSON.stringify({ reason: finalReason }),
+        }
       );
 
       const data = await res.json();
@@ -123,9 +117,10 @@ body: JSON.stringify({ reason: finalReason }),        }
           prev.map((o) =>
             String(o._id) === String(selectedOrderId)
               ? {
-                  ...o,
-                  status: "User Cancelled",
-cancelReason: finalReason,                }
+                ...o,
+                status: "User Cancelled",
+                cancelReason: finalReason,
+              }
               : o
           )
         );
@@ -258,7 +253,7 @@ cancelReason: finalReason,                }
                             >
                               Cancel Order
                             </button>
-                        )}
+                          )}
                       </div>
                     </div>
 
@@ -268,18 +263,16 @@ cancelReason: finalReason,                }
                           {trackingSteps.map((step, index) => (
                             <div key={index} className="tracking-step">
                               <div
-                                className={`circle ${
-                                  index <= currentIndex ? "active" : ""
-                                }`}
+                                className={`circle ${index <= currentIndex ? "active" : ""
+                                  }`}
                               >
                                 {index < currentIndex ? "✓" : ""}
                               </div>
 
                               {index !== trackingSteps.length - 1 && (
                                 <div
-                                  className={`line ${
-                                    index < currentIndex ? "active" : ""
-                                  }`}
+                                  className={`line ${index < currentIndex ? "active" : ""
+                                    }`}
                                 />
                               )}
 
@@ -287,7 +280,7 @@ cancelReason: finalReason,                }
                             </div>
                           ))}
                         </div>
-                    )}
+                      )}
 
                     <p className="order-summary">
                       Total Products: <strong>{totalProducts}</strong> |
@@ -308,7 +301,7 @@ cancelReason: finalReason,                }
                         <span>Qty</span>
                         <span>Price</span>
                         <span>Offer</span>
-                         <span>Total</span>
+                        <span>Total</span>
 
                       </div>
 
@@ -326,16 +319,16 @@ cancelReason: finalReason,                }
                           <span>{item.quantity}</span>
                           <span>₹{item.price}</span>
                           <span>
-  {item.offer && item.offer !== ""
-    ? item.offer
-    : item.offerPercentage > 0
-    ? `${item.offerPercentage}% OFF`
-    : item.discount > 0
-    ? `₹${item.discount} OFF`
-    : "-"}
-</span>   
+                            {item.offer && item.offer !== ""
+                              ? item.offer
+                              : item.offerPercentage > 0
+                                ? `${item.offerPercentage}% OFF`
+                                : item.discount > 0
+                                  ? `₹${item.discount} OFF`
+                                  : "-"}
+                          </span>
                           <span>₹{item.price * item.quantity}</span>
-                     </div>
+                        </div>
                       ))}
                     </div>
 
@@ -355,28 +348,27 @@ cancelReason: finalReason,                }
 
             <h3>Why are you cancelling?</h3>
 
-{cancelReasons.map((reason, i) => (
-  <label key={i} className="reason-option">
-    <input
-      type="radio"
-      name="cancelReason"
-      value={reason}
-      onChange={(e) => setCancelReason(e.target.value)}
-    />
-    {reason}
+            {cancelReasons.map((reason, i) => (
+              <label key={i} className="reason-option">
+                <input
+                  type="radio"
+                  name="cancelReason"
+                  value={reason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                />
+                {reason}
 
-    {/* ✅ OTHER INPUT FIELD */}
-    {cancelReason === "Other" && reason === "Other" && (
-      <input
-        type="text"
-        className="other-reason-input"
-        placeholder="Enter your reason..."
-        value={customReason}
-        onChange={(e) => setCustomReason(e.target.value)}
-      />
-    )}
-  </label>
-))}
+                {cancelReason === "Other" && reason === "Other" && (
+                  <input
+                    type="text"
+                    className="other-reason-input"
+                    placeholder="Enter your reason..."
+                    value={customReason}
+                    onChange={(e) => setCustomReason(e.target.value)}
+                  />
+                )}
+              </label>
+            ))}
 
             <div className="modal-actions">
               <button

@@ -1,6 +1,3 @@
-/* ===============================
-   BRANDS SECTION
-================================ */
 .brands-section {
   padding: 24px 16px;
   max-width: 1200px;
@@ -14,22 +11,15 @@
   margin-bottom: 20px;
   text-align: center;
 }
-
-/* ===============================
-   BRANDS ROW
-================================ */
 .brands-container {
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
   position: relative;
   top: 40px;
-  justify-content: center; /* center on smaller screens */
+  justify-content: center;
 }
 
-/* ===============================
-   BRAND CARD
-================================ */
 .brand-card {
   width: 90px;
   display: flex;
@@ -44,27 +34,22 @@
   transform: scale(1.1);
 }
 
-/* ===============================
-   IMAGE ONLY (NO BACKGROUND)
-================================ */
 .brand-image {
   width: 90px;
   height: 90px;
   overflow: hidden;
-  border-radius: 50%;        /* circle look */
-  background: transparent;   /* 🔴 IMPORTANT */
+  border-radius: 50%;    
+  background: transparent;   
+  
 }
 
 .brand-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;         /* 🔥 MAIN FIX */
+  object-fit: cover;     
   display: block;
 }
 
-/* ===============================
-   BRAND NAME
-================================ */
 .brand-name {
   margin-top: 6px;
   font-size: 13px;
@@ -78,11 +63,6 @@
   scroll-margin-top: 250px;
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
-
-/* Tablets & small desktops */
 @media (max-width: 1024px) {
   .brands-container {
     gap: 20px;
@@ -100,7 +80,6 @@
   }
 }
 
-/* Tablets / large mobiles */
 @media (max-width: 768px) {
   .brands-container {
     gap: 18px;
@@ -118,7 +97,6 @@
   }
 }
 
-/* Small mobiles */
 @media (max-width: 480px) {
   .brands-container {
     gap: 15px;

@@ -1,6 +1,3 @@
-/* ===============================
-   STEPS TRACKER (DESKTOP DEFAULT)
-==================================*/
 .steps-tracker {
   display: flex;
   justify-content: center;
@@ -67,9 +64,7 @@
 .step.completed .step-line {
   background-color: #000;
 }
-/* =================================
-        TABLET RESPONSIVE
-=================================*/
+
 @media (max-width: 1024px) {
   .steps-tracker {
     gap: 40px;
@@ -81,29 +76,25 @@
   }
 }
 
-
-/* =================================
-        MOBILE RESPONSIVE
-=================================*/
 @media (max-width: 768px) {
 
   .steps-tracker {
-    flex-direction: row;        /* KEEP HORIZONTAL */
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 25px;
-    flex-wrap: wrap;            /* Prevent overflow */
+    flex-wrap: wrap;
     margin: 40px 0;
   }
 
   .step {
-    flex-direction: column;     /* Number upar, text niche */
+    flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
   .step-line {
-    width: 30px;                /* Horizontal line */
+    width: 30px;
     height: 3px;
     position: static;
   }
@@ -114,10 +105,6 @@
   }
 }
 
-
-/* =================================
-        SMALL MOBILE
-=================================*/
 @media (max-width: 480px) {
 
   .steps-tracker {

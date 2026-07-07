@@ -90,7 +90,7 @@ export default function Signup() {
           />
 
           <input
-            type="password" // ✅ masked
+            type="password"
             placeholder="Password"
             value={form.password}
             onChange={(e) =>
@@ -99,7 +99,7 @@ export default function Signup() {
           />
 
           <input
-            type="password" // ✅ masked
+            type="password"
             placeholder="Confirm Password"
             value={form.confirmPassword}
             onChange={(e) =>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
-import BASE_URL from "../config"; // BASE_URL import
+import BASE_URL from "../config"; 
 import "./admin.css";
 
 function AdminLayout() {
   const [topbar, setTopbar] = useState({ title: "Admin Panel" });
 
   useEffect(() => {
-    fetch(`${BASE_URL}/admin/topbar`) // BASE_URL used
+    fetch(`${BASE_URL}/admin/topbar`) 
       .then(res => res.json())
       .then(data => {
         if (data && data.title) setTopbar(data);

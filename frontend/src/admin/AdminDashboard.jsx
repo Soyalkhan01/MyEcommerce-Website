@@ -7,7 +7,6 @@ import {
 } from "recharts";
 import "./AdminDashboard.css";
 
-// Dynamic BASE_URL (same as OwnerProfile)
 const BASE_URL =
   window.location.hostname === "localhost"
     ? "http://127.0.0.1:5000"
@@ -216,76 +215,75 @@ export default function AdminDashboard() {
                   <td>{order.customer?.email || "N/A"}</td>
                   <td>{order.customer?.phone || "N/A"}</td>
                   <td className="address-cell">{order.customer?.address || "N/A"}</td>
-<td className="products-cell">
-  <div className="products-list">
-    {order.items.map((item, i) => (
-      <div key={i} className="product-row">
-        <img
-          src={item.images?.[0] || item.image || "/default-product.png"}
-          alt={item.name}
-          className="product-thumb"
-        />
-        <div className="product-info">
-          <span className="product-name">{item.name}</span>
+                  <td className="products-cell">
+                    <div className="products-list">
+                      {order.items.map((item, i) => (
+                        <div key={i} className="product-row">
+                          <img
+                            src={item.images?.[0] || item.image || "/default-product.png"}
+                            alt={item.name}
+                            className="product-thumb"
+                          />
+                          <div className="product-info">
+                            <span className="product-name">{item.name}</span>
 
-          {/* Old price */}
-          {item.oldPrice && (
-            <p className="old-price">₹{item.oldPrice.toFixed(2)}</p>
-          )}
+                            {/* Old price */}
+                            {item.oldPrice && (
+                              <p className="old-price">₹{item.oldPrice.toFixed(2)}</p>
+                            )}
 
-          {/* Offer */}
-          {item.offer && <p className="product-offer">{item.offer}</p>}
+                            {/* Offer */}
+                            {item.offer && <p className="product-offer">{item.offer}</p>}
 
-          {/* Discount */}
-          {/* {item.discount > 0 && (
+                            {/* Discount */}
+                            {/* {item.discount > 0 && (
             <p className="product-discount">
               You saved ₹{item.discount.toFixed(2)}
             </p>
           )} */}
 
-          {/* Final price */}
-          <p className="final-price">₹{item.price.toFixed(2)}</p>
-        </div>
-      </div>
-    ))}
-  </div>
-</td>
+                            {/* Final price */}
+                            <p className="final-price">₹{item.price.toFixed(2)}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
                   <td>{order.items.map((item) => item.quantity).join(", ")}</td>
                   <td>₹{order.total.toFixed(2)}</td>
                   <td>{new Date(order.createdAt).toLocaleString("en-IN")}</td>
-<td>
-  <div className="status-wrapper">
+                  <td>
+                    <div className="status-wrapper">
 
-    <span
-      className={`status-badge status-${order.status
-        ?.toLowerCase()
-        .replace(/\s/g, "-")}`}
-    >
-      {order.status}
-    </span>
+                      <span
+                        className={`status-badge status-${order.status
+                          ?.toLowerCase()
+                          .replace(/\s/g, "-")}`}
+                      >
+                        {order.status}
+                      </span>
 
-    {/* ✅ Show reason if user cancelled */}
-    {order.status === "User Cancelled" && order.cancelReason && (
-      <div className="cancel-reason">
-        Reason: {order.cancelReason}
-      </div>
-    )}
+                      {order.status === "User Cancelled" && order.cancelReason && (
+                        <div className="cancel-reason">
+                          Reason: {order.cancelReason}
+                        </div>
+                      )}
 
-  </div>
-</td> 
-              <td>
+                    </div>
+                  </td>
+                  <td>
                     {order.status !== "Completed" && order.status !== "Shipping" && (
                       <button className="btn-shipping" onClick={() => updateOrderStatus(order._id, "Shipping")}>Shipping</button>
                     )}
-{order.status !== "Cancelled" && order.status !== "User Cancelled" && (
-  <button className="btn-cancel" onClick={() => updateOrderStatus(order._id, "Cancelled")}>
-    Cancel
-  </button>
-)}
+                    {order.status !== "Cancelled" && order.status !== "User Cancelled" && (
+                      <button className="btn-cancel" onClick={() => updateOrderStatus(order._id, "Cancelled")}>
+                        Cancel
+                      </button>
+                    )}
                   </td>
                   <td>
                     <div className="status-slider">
-                      {["Order Placed","Order Confirmed","Packed the product","Arrived in warehouse","Near by courier facility","Out for Delivery","Delivered"].map(s => (
+                      {["Order Placed", "Order Confirmed", "Packed the product", "Arrived in warehouse", "Near by courier facility", "Out for Delivery", "Delivered"].map(s => (
                         <button key={s} onClick={() => updateOrderStatus(order._id, s)}>{s}</button>
                       ))}
                       <button className="btn-cancel" onClick={() => updateOrderStatus(order._id, "Cancelled")}>Cancel</button>

@@ -94,7 +94,6 @@
 .brand-item button:hover {
   background-color: #0056b3;
 }
-/* ================= TABLET (≤1024px) ================= */
 @media (max-width: 1024px) {
 
   .admin-brands {
@@ -118,7 +117,6 @@
 }
 
 
-/* ================= MOBILE (≤768px) ================= */
 @media (max-width: 768px) {
 
   .admin-brands {
@@ -169,8 +167,6 @@
   }
 }
 
-
-/* ================= SMALL MOBILE (≤480px) ================= */
 @media (max-width: 480px) {
 
   .admin-brands {
@@ -207,8 +203,6 @@
   }
 }
 
-
-/* ================= EXTRA SMALL DEVICES (≤360px) ================= */
 @media (max-width: 360px) {
 
   .admin-brands {

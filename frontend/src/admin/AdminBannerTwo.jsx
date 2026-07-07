@@ -50,7 +50,6 @@ export default function AdminBannerTwo() {
             put(`${BASE_URL}/banner-two/${editId}`,form);
 
       } else {
-        // ADD NEW  ✅ Ye line fix ki gayi hai
         await axios.
         // post("http://127.0.0.1:5000/banners-two", form);
             post(`${BASE_URL}/banner-two`,form);

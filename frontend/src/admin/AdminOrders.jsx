@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import BASE_URL from "../config"; // BASE_URL import
+import BASE_URL from "../config";
 import "./AdminOrders.css";
 
 function AdminOrders() {
@@ -66,12 +66,12 @@ function AdminOrders() {
 
             const date = order.createdAt
               ? new Date(order.createdAt).toLocaleString("en-IN", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
               : "N/A";
 
             return (

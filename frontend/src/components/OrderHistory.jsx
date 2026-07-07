@@ -116,50 +116,50 @@ export default function OrderHistory() {
                   </p>
                 )}
 
-      <div className="oh-products">
-  {order.items.map((item, i) => {
-    // 🔹 Calculate saved amount correctly
-    const savedAmount =
-      item.oldPrice && item.oldPrice > item.price
-        ? (item.oldPrice - item.price) * item.quantity
-        : item.discount && item.discount > 0
-        ? item.discount * item.quantity
-        : 0;
+                <div className="oh-products">
+                  {order.items.map((item, i) => {
+                    // 🔹 Calculate saved amount correctly
+                    const savedAmount =
+                      item.oldPrice && item.oldPrice > item.price
+                        ? (item.oldPrice - item.price) * item.quantity
+                        : item.discount && item.discount > 0
+                          ? item.discount * item.quantity
+                          : 0;
 
-    const total = item.price * item.quantity;
+                    const total = item.price * item.quantity;
 
-    return (
-      <div key={i} className="oh-product-row">
-        <img src={item.image} alt={item.name} />
+                    return (
+                      <div key={i} className="oh-product-row">
+                        <img src={item.image} alt={item.name} />
 
-        <div>
-          <h5>{item.name}</h5>
+                        <div>
+                          <h5>{item.name}</h5>
 
-          <p>Qty: {item.quantity}</p>
+                          <p>Qty: {item.quantity}</p>
 
-          {/* Price per item */}
-          <p className="oh-price">₹{item.price}</p>
+                          {/* Price per item */}
+                          <p className="oh-price">₹{item.price}</p>
 
-          {/* Old Price if exists */}
-          {/* {item.oldPrice && <p className="oh-old-price">Old Price: ₹{item.oldPrice}</p>} */}
+                          {/* Old Price if exists */}
+                          {/* {item.oldPrice && <p className="oh-old-price">Old Price: ₹{item.oldPrice}</p>} */}
 
-          {/* Offer */}
-          {item.offer && <p className="oh-offer">{item.offer}</p>}
+                          {/* Offer */}
+                          {item.offer && <p className="oh-offer">{item.offer}</p>}
 
-          {/* You saved */}
-          {/* {savedAmount > 0 && (
+                          {/* You saved */}
+                          {/* {savedAmount > 0 && (
             <p className="oh-discount">
               You saved ₹{savedAmount.toFixed(2)}
             </p>
           )} */}
 
-          {/* Total for this item */}
-          <p className="oh-total-item">Total: ₹{total}</p>
-        </div>
-      </div>
-    );
-  })}
-</div>
+                          {/* Total for this item */}
+                          <p className="oh-total-item">Total: ₹{total}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
 
               </div>
             );

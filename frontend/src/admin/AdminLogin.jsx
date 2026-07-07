@@ -5,7 +5,7 @@ import "./AdminAuth.css";
 function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showReset, setShowReset] = useState(false); // Reset form toggle
+  const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ function AdminLogin() {
     }
   };
 
-  // Password reset submit handler
   const handlePasswordReset = (e) => {
     e.preventDefault();
     if (!resetEmail.trim() || !newPassword.trim()) {
@@ -42,12 +41,10 @@ function AdminLogin() {
       return;
     }
 
-    // Update password in localStorage
     admins[adminIndex].password = newPassword.trim();
     localStorage.setItem("admins", JSON.stringify(admins));
 
     alert("Password reset successful! Please login with new password.");
-    // Reset reset form & switch back to login
     setShowReset(false);
     setResetEmail("");
     setNewPassword("");

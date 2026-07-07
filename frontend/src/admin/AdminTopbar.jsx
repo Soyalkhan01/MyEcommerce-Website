@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import BASE_URL from "../config"; // BASE_URL import
+import BASE_URL from "../config";
 import "./admin.css";
 
 function AdminTopbar() {

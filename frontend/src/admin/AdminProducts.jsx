@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BASE_URL from "../config"; // BASE_URL import
+import BASE_URL from "../config";
 import "./AdminProducts.css";
 
 function AdminProducts() {
@@ -28,7 +28,6 @@ function AdminProducts() {
   const [uploading, setUploading] = useState(false);
   const [webImage, setWebImage] = useState("");
 
-  // ================= FETCH PRODUCTS =================
   const fetchProducts = async () => {
     try {
       const res = await fetch(`${BASE_URL}/admin/products`);
@@ -44,13 +43,11 @@ function AdminProducts() {
     fetchProducts();
   }, []);
 
-  // ================= FORM HANDLERS =================
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     let newForm = { ...form, [name]: value };
 
-    // ===== AUTOMATIC PRICE CALCULATION =====
     if (name === "offer" || name === "oldPrice") {
       const oldPriceNum = parseFloat(newForm.oldPrice) || 0;
       const offerMatch = newForm.offer.match(/(\d+(\.\d+)?)%/);
@@ -96,7 +93,6 @@ function AdminProducts() {
     setWebImage("");
   };
 
-  // ================= SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -145,7 +141,6 @@ function AdminProducts() {
     }
   };
 
-  // ================= RESET FORM =================
   const resetForm = () => {
     setForm({
       name: "",
@@ -168,7 +163,6 @@ function AdminProducts() {
     setEditingId(null);
   };
 
-  // ================= EDIT / DELETE / RECOVER / PERMANENT DELETE =================
   const handleEdit = (item) => {
     setForm({
       name: item.name || "",
@@ -213,7 +207,6 @@ function AdminProducts() {
     setTimeout(() => setMessage(null), 3000);
   };
 
-  // ================= FILTER & SORT =================
   const filteredProducts = products
     .filter((p) => p.name && p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => b.id - a.id);

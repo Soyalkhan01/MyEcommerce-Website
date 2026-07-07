@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BASE_URL from "../config"; // <-- BASE_URL import
+import BASE_URL from "../config"; 
 import "./AdminLatestProducts.css";
 
 const emptyForm = {
@@ -29,7 +29,6 @@ function AdminLatestProducts() {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
 
-  /* ================= FETCH PRODUCTS ================= */
   const fetchProducts = async () => {
     try {
       const res = await fetch(`${BASE_URL}/admin/latest-products`);
@@ -44,17 +43,13 @@ function AdminLatestProducts() {
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  /* ================= FORM HANDLERS ================= */
   const handleChange = (key, value) => {
     setForm(prev => {
       let updated = { ...prev, [key]: value };
 
-      // ✅ Auto-calculate price if oldPrice or offer changes
       if (key === "oldPrice" || key === "offer") {
         const oldPriceNum = Number(updated.oldPrice) || 0;
 
-        // Extract number from offer string (e.g., "30% OFF")
         let offerNum = 0;
         if (updated.offer) {
           const match = updated.offer.match(/\d+/);
@@ -73,8 +68,6 @@ function AdminLatestProducts() {
 
   const handleFileChange = (file) => setForm(prev => ({ ...prev, imageFile: file, image: "" }));
   const resetForm = () => { setForm(emptyForm); setEditingId(null); };
-
-  /* ================= SUBMIT PRODUCT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -101,7 +94,6 @@ function AdminLatestProducts() {
     }
   };
 
-  /* ================= ACTIONS ================= */
   const editProduct = (p) => {
     setForm({
       name: p.name || "",
@@ -145,7 +137,6 @@ function AdminLatestProducts() {
     fetchProducts();
   };
 
-  /* ================= UI ================= */
   return (
     <div className="admin-page">
       <h2>Latest Products – Admin</h2>

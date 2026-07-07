@@ -70,7 +70,6 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-/* =================== TABLET (≤1024px) =================== */
 @media (max-width: 1024px) {
   .admin-favicon-container {
     padding: 18px;
@@ -94,7 +93,6 @@
 }
 
 
-/* =================== MOBILE (≤768px) =================== */
 @media (max-width: 768px) {
   .admin-favicon-container {
     padding: 15px;
@@ -130,8 +128,6 @@
   }
 }
 
-
-/* =================== SMALL MOBILE (≤480px) =================== */
 @media (max-width: 480px) {
   .admin-favicon-container {
     padding: 12px;

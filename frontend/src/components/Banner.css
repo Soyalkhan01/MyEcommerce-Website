@@ -1,5 +1,3 @@
-/* ================= Banner Slider ================= */
-
 .banner-slider {
   width: 100%;
   height: 600px;
@@ -8,27 +6,25 @@
   background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
-  margin-top: 10px; /* 🔥 IMPORTANT - navbar height ke equal */
+  margin-top: 10px;
 }
 
 .banner-overlay {
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.75) 0%,
-    rgba(0, 0, 0, 0.45) 50%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.45) 50%,
+      rgba(0, 0, 0, 0.15) 100%);
   display: flex;
-  align-items: flex-end; /* better than margin-top */
+  align-items: flex-end;
 }
 
 .banner-content {
   max-width: 700px;
   padding: 60px;
   color: #ffffff;
-  margin-bottom: 80px; /* use bottom spacing instead of margin-top */
+  margin-bottom: 80px;
 }
 
 .banner-content h1 {
@@ -62,15 +58,11 @@
   transform: translateY(-1px);
 }
 
-
-/* ================= Media Queries ================= */
-
-/* Tablets */
 @media (max-width: 1024px) {
 
   .banner-slider {
     height: 480px;
-    margin-top: 70px; /* navbar smaller ho to adjust */
+    margin-top: 70px;
   }
 
   .banner-content {
@@ -87,8 +79,6 @@
   }
 }
 
-
-/* Tablets / large mobiles */
 @media (max-width: 768px) {
 
   .banner-slider {
@@ -115,8 +105,6 @@
   }
 }
 
-
-/* Small mobiles */
 @media (max-width: 480px) {
 
   .banner-slider {

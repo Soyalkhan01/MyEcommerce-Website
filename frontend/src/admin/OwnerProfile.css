@@ -1,16 +1,3 @@
-/* ================= PROFILE PAGE ================= */
-
-/* .owner-profile-container{
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-padding:40px;
-font-family: "Inter", Arial, sans-serif;
-} */
-
-/* MAIN WRAPPER */
-
 .owner-profile-wrapper{
 display:flex;
 justify-content:center;
@@ -24,8 +11,6 @@ position: relative;
 left:60px;
 top: 20px;
 }
-
-/* ================= LEFT PANEL ================= */
 
 .owner-left{
 width:320px;
@@ -56,7 +41,6 @@ font-size:14px;
 margin-bottom:25px;
 }
 
-/* LEFT MENU */
 
 .owner-menu{
 display:flex;
@@ -86,8 +70,6 @@ color:#ff9800;
 font-weight:600;
 }
 
-/* ================= RIGHT PANEL ================= */
-
 .owner-right{
 flex:1;
 padding:40px 50px;
@@ -99,8 +81,6 @@ font-weight:600;
 margin-bottom:30px;
 color:#333;
 }
-
-/* FORM GRID */
 
 .owner-form{
 display:grid;
@@ -122,13 +102,10 @@ border-color:#ff9800;
 background:white;
 }
 
-/* FULL WIDTH INPUT */
 
 .full{
 grid-column:span 2;
 }
-
-/* ================= BUTTONS ================= */
 
 .owner-buttons{
 margin-top:35px;
@@ -166,14 +143,11 @@ transition:.2s;
 background:#e68900;
 }
 
-/* ================= FILE INPUT ================= */
 
 .owner-left input[type="file"]{
 margin-top:10px;
 font-size:13px;
 }
-
-/* ================= MOBILE ================= */
 
 @media(max-width:900px){
 

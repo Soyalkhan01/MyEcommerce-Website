@@ -1,203 +1,3 @@
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import "./ProfilePage.css";
-
-// export default function ProfilePage() {
-//   const navigate = useNavigate();
-//   const [user, setUser] = useState(null);
-//   const [editForm, setEditForm] = useState({
-//     name: "",
-//     email: "",
-//     currentPassword: "",
-//     newPassword: "",
-//   });
-//   const [message, setMessage] = useState("");
-
-//   useEffect(() => {
-//     const savedUser = localStorage.getItem("user");
-//     if (!savedUser) {
-//       navigate("/login");
-//     } else {
-//       const u = JSON.parse(savedUser);
-//       setUser(u);
-//       setEditForm({ ...editForm, name: u.name, email: u.email });
-//     }
-//   }, [navigate]);
-
-//   const handleUpdate = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       const res = await axios.put(
-//         "http://127.0.0.1:5000/auth/update",
-//         editForm,
-//         { headers: { Authorization: `Bearer ${token}` } }
-//       );
-//       setMessage("Profile updated successfully!");
-//       localStorage.setItem("user", JSON.stringify(res.data.user));
-//       setUser(res.data.user);
-//     } catch (err) {
-//       setMessage(err.response?.data?.error || "Update failed");
-//     }
-//   };
-
-//   const handleLogout = () => {
-//     localStorage.removeItem("token");
-//     localStorage.removeItem("user");
-//     navigate("/login");
-//   };
-
-//   const handleForgotPassword = () => {
-//     navigate("/forgot-password");
-//   };
-
-//   if (!user) return null;
-
-//   return (
-//     <div className="profile-page">
-//       <div className="profile-sidebar">
-//         <div className="profile-card">
-//           <img
-//             src={user.image || "/default-profile.png"}
-//             alt={user.name}
-//             className="profile-image"
-//           />
-//           <h2>{user.name}</h2>
-//           <p>{user.email}</p>
-//           <button className="btn-logout" onClick={handleLogout}>
-//             Logout
-//           </button>
-//         </div>
-//         <div className="sidebar-menu">
-//           <button onClick={() => navigate("/orders")}>My Orders</button>
-//           <button onClick={handleForgotPassword}>Forgot Password</button>
-//         </div>
-//       </div>
-
-//       <div className="profile-main">
-//         <h1>My Account</h1>
-//         {message && <div className="message">{message}</div>}
-//         <div className="profile-form">
-//           <label>Name</label>
-//           <input
-//             value={editForm.name}
-//             onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-//           />
-
-//           <label>Email</label>
-//           <input
-//             value={editForm.email}
-//             onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-//           />
-
-//           <label>Current Password</label>
-//           <input
-//             type="password"
-//             placeholder="Leave blank if not changing"
-//             value={editForm.currentPassword}
-//             onChange={(e) =>
-//               setEditForm({ ...editForm, currentPassword: e.target.value })
-//             }
-//           />
-
-//           <label>New Password</label>
-//           <input
-//             type="password"
-//             placeholder="Leave blank if not changing"
-//             value={editForm.newPassword}
-//             onChange={(e) =>
-//               setEditForm({ ...editForm, newPassword: e.target.value })
-//             }
-//           />
-
-//           <button className="btn-update" onClick={handleUpdate}>
-//             Update Profile
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import "./ProfilePage.css";
-
-// export default function SettingsPage() {
-//   const navigate = useNavigate();
-//   const [user, setUser] = useState(null);
-//   const [form, setForm] = useState({ name: "", email: "", phone: "", currentPassword: "", newPassword: "" });
-//   const [message, setMessage] = useState("");
-
-//   useEffect(() => {
-//     const savedUser = localStorage.getItem("user");
-//     if (!savedUser) navigate("/login");
-//     else {
-//       const u = JSON.parse(savedUser);
-//       setUser(u);
-//       setForm({ ...form, name: u.name, email: u.email, phone: u.phone || "" });
-//     }
-//   }, [navigate]);
-
-//   const handleUpdate = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       const res = await axios.put("http://127.0.0.1:5000/auth/update", form, { headers: { Authorization: `Bearer ${token}` } });
-//       setMessage("Profile updated successfully!");
-//       localStorage.setItem("user", JSON.stringify(res.data.user));
-//       setUser(res.data.user);
-//     } catch (err) {
-//       setMessage(err.response?.data?.error || "Update failed");
-//     }
-//   };
-
-//   const handleForgotPassword = () => navigate("/forgot-password");
-
-//   if (!user) return null;
-
-//   return (
-//     <div className="settings-page">
-//       <div className="settings-sidebar">
-//         <div className="profile-card">
-//           <img src={user.image || "/default-profile.png"} alt={user.name} className="profile-image"/>
-//           <h2>{user.name}</h2>
-//           <p>{user.email}</p>
-//         </div>
-//         <div className="sidebar-menu">
-//           <button onClick={() => navigate("/profile")}>My Profile</button>
-//           <button onClick={handleForgotPassword}>Forgot Password</button>
-//         </div>
-//       </div>
-
-//       <div className="settings-main">
-//         <h1>Account Settings</h1>
-//         {message && <div className="message">{message}</div>}
-//         <div className="settings-form">
-//           <label>Name</label>
-//           <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}/>
-          
-//           <label>Email</label>
-//           <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}/>
-          
-//           <label>Phone</label>
-//           <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}/>
-
-//           <label>Current Password</label>
-//           <input type="password" placeholder="Leave blank if not changing" value={form.currentPassword} onChange={e => setForm({ ...form, currentPassword: e.target.value })}/>
-
-//           <label>New Password</label>
-//           <input type="password" placeholder="Leave blank if not changing" value={form.newPassword} onChange={e => setForm({ ...form, newPassword: e.target.value })}/>
-
-//           <button className="btn-update" onClick={handleUpdate}>Update Profile</button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -225,13 +25,13 @@ export default function SettingsPage() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.
-      // put("http://127.0.0.1:5000/auth/update", 
-              put(`${BASE_URL}/auth/update`,
+        // put("http://127.0.0.1:5000/auth/update", 
+        put(`${BASE_URL}/auth/update`,
 
-      
-        form, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+
+          form, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       setMessage("Profile updated successfully!");
       localStorage.setItem("user", JSON.stringify(res.data.user));
       setUser(res.data.user);
@@ -248,7 +48,7 @@ export default function SettingsPage() {
     <div className="settings-page">
       <div className="settings-sidebar">
         <div className="profile-card">
-          <img src={user.image || "/default-profile.png"} alt={user.name} className="profile-image"/>
+          <img src={user.image || "/default-profile.png"} alt={user.name} className="profile-image" />
           <h2>{user.name}</h2>
           <p>{user.email}</p>
         </div>
@@ -263,19 +63,19 @@ export default function SettingsPage() {
         {message && <div className="message">{message}</div>}
         <div className="settings-form">
           <label>Name</label>
-          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}/>
-          
+          <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+
           <label>Email</label>
-          <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}/>
-          
+          <input value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
+
           <label>Phone</label>
-          <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}/>
+          <input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
 
           <label>Current Password</label>
-          <input type="password" placeholder="Leave blank if not changing" value={form.currentPassword} onChange={e => setForm({ ...form, currentPassword: e.target.value })}/>
+          <input type="password" placeholder="Leave blank if not changing" value={form.currentPassword} onChange={e => setForm({ ...form, currentPassword: e.target.value })} />
 
           <label>New Password</label>
-          <input type="password" placeholder="Leave blank if not changing" value={form.newPassword} onChange={e => setForm({ ...form, newPassword: e.target.value })}/>
+          <input type="password" placeholder="Leave blank if not changing" value={form.newPassword} onChange={e => setForm({ ...form, newPassword: e.target.value })} />
 
           <button className="btn-update" onClick={handleUpdate}>Update Profile</button>
         </div>

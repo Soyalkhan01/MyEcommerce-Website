@@ -1,47 +1,3 @@
-  // import { useEffect, useState } from "react";
-  // import { NavLink } from "react-router-dom";
-  // import "./admin.css";
-
-  // function AdminSidebar() {
-  //   const [sidebar, setSidebar] = useState({ title: "Admin Panel", menus: [] });
-
-    
-  //   useEffect(() => {
-  //     fetch("http://127.0.0.1:5000/admin/sidebar")
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         if (data && Array.isArray(data.menus)) {
-  //           setSidebar(data);
-  //         }
-  //       })
-  //       .catch(err => console.error("Sidebar fetch error:", err));
-  //   }, []);
-
-  //   return (
-  //     <aside className="admin-sidebar">
-  //       <div className="sidebar-header">
-  //         <h2>{sidebar.title || "Admin Panel"}</h2>
-  //       </div>
-
-  //       <nav className="sidebar-nav">
-  //         {sidebar.menus.map((menu, i) => (
-  //           <NavLink
-  //             key={i}
-  //             to={menu.path}
-  //             className={({ isActive }) =>
-  //               isActive ? "admin-link active" : "admin-link"
-  //             }
-  //           >
-  //             {menu.name}
-  //           </NavLink>
-  //         ))}
-  //       </nav>
-  //     </aside>
-  //   );
-  // }
-
-  // export default AdminSidebar;
-
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import BASE_URL from "../config";
@@ -51,7 +7,7 @@ function AdminSidebar() {
   const [sidebar, setSidebar] = useState({ title: "Admin Panel", menus: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isOpen, setIsOpen] = useState(false); // ⭐ mobile toggle
+  const [isOpen, setIsOpen] = useState(false); 
 
   useEffect(() => {
     fetch(`${BASE_URL}/admin/sidebar`)
@@ -76,7 +32,6 @@ function AdminSidebar() {
 
   return (
     <>
-      {/* ⭐ Mobile Top Bar */}
       <div className="admin-mobile-bar">
         <button
           className="admin-hamburger"
@@ -100,7 +55,7 @@ function AdminSidebar() {
               className={({ isActive }) =>
                 isActive ? "admin-link active" : "admin-link"
               }
-              onClick={() => setIsOpen(false)} // mobile pe click kare to close
+              onClick={() => setIsOpen(false)} 
             >
               {menu.name}
             </NavLink>

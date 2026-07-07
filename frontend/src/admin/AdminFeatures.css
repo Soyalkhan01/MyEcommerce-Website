@@ -47,7 +47,6 @@
 .admin-table img {
   width: 40px;
 }
-/* =================== TABLET (≤1024px) =================== */
 @media (max-width: 1024px) {
   .admin-form input {
     font-size: 14px;
@@ -70,8 +69,6 @@
   }
 }
 
-
-/* =================== MOBILE (≤768px) =================== */
 @media (max-width: 768px) {
   .admin-form input {
     font-size: 13px;
@@ -101,8 +98,6 @@
   }
 }
 
-
-/* =================== SMALL MOBILE (≤480px) =================== */
 @media (max-width: 480px) {
   .af-message {
     font-size: 13px;

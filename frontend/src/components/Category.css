@@ -1,7 +1,3 @@
-
-/* =====================================================
-   CATEGORY CONTAINER
-===================================================== */
 .category-container {
   display: flex;
   overflow-x: auto;
@@ -16,24 +12,23 @@
   background-color: transparent;
 }
 
-#category{
+#category {
   scroll-margin-top: 250px;
 }
 
 .category-container::-webkit-scrollbar {
   height: 6px;
 }
+
 .category-container::-webkit-scrollbar-thumb {
   background-color: #9e9e9e;
   border-radius: 3px;
 }
+
 .category-container::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* =====================================================
-   CATEGORY BUTTONS (NO HOVER / NO COLOR)
-===================================================== */
 .category-button {
   background: transparent;
   border: none;
@@ -65,12 +60,11 @@
   object-fit: cover;
   margin-bottom: 6px;
   border: 2px solid transparent;
-  transition: transform 0.25s ease; /* smooth zoom */
+  transition: transform 0.25s ease;
 }
 
-/* HOVER EFFECT: ZOOM */
 .category-button:hover img.category-icon {
-  transform: scale(1.15); /* 15% zoom on hover */
+  transform: scale(1.15);
 }
 
 
@@ -91,21 +85,16 @@
   border-color: #ff6a00;
 }
 
-/* =====================================================
-   PRODUCTS GRID (ALWAYS CENTER)
-===================================================== */
 .cat-products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 260px));
-  justify-content: center;   /* ⭐ CENTER FIX */
+  justify-content: center;
+  /* ⭐ CENTER FIX */
   gap: 20px;
   padding: 20px;
   margin: 60px auto;
 }
 
-/* =====================================================
-   PRODUCT CARD (SCREENSHOT STYLE)
-===================================================== */
 .cat-product-card {
   background: #ffffff;
   border: 1px solid #e6e6e6;
@@ -118,40 +107,32 @@
 }
 
 .cat-product-card:hover {
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transform: translateY(-3px);
 }
 
-/* =====================================================
-   CATEGORY PRODUCT IMAGE - FULL COVER LIKE LATEST PRODUCTS
-===================================================== */
 .cat-product-card img {
   width: 100%;
-  height: 200px; /* desktop ke liye thodi height badhai */
-  object-fit: cover; /* image card ke andar fully cover ho */
+  height: 200px;
+  object-fit: cover;
   border-radius: 8px;
   margin-bottom: 12px;
   cursor: pointer;
   display: block;
 }
 
-/* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .cat-product-card img {
-    height: 140px; /* thoda chhota on tablet */
+    height: 140px;
   }
 }
 
 @media (max-width: 480px) {
   .cat-product-card img {
-    height: 120px; /* chhota for mobile */
+    height: 120px;
   }
 }
 
-
-/* =====================================================
-   PRODUCT TEXT
-===================================================== */
 .cat-product-title {
   font-size: 15px;
   font-weight: 600;
@@ -167,9 +148,6 @@
   margin-bottom: 10px;
 }
 
-/* =====================================================
-   RATING / STOCK / OFFER
-===================================================== */
 .cat-rating-offer {
   display: flex;
   justify-content: space-between;
@@ -199,9 +177,7 @@
   border-radius: 6px;
 }
 
-/* =====================================================
-   PRICE
-===================================================== */
+
 .cat-price-box {
   display: flex;
   align-items: center;
@@ -222,9 +198,6 @@
   text-decoration: line-through;
 }
 
-/* =====================================================
-   ACTION BUTTONS
-===================================================== */
 .cat-action-buttons {
   display: flex;
   gap: 12px;
@@ -242,8 +215,9 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
 .cat-buy-btn:hover {
-background-color: #e85b17;
+  background-color: #e85b17;
 
 }
 
@@ -258,9 +232,10 @@ background-color: #e85b17;
   border-radius: 6px;
   cursor: pointer;
 }
+
 .cat-cart-btn:hover {
-background-color: #f5a97f;
-border: 2px solid #f5a97f;
+  background-color: #f5a97f;
+  border: 2px solid #f5a97f;
 }
 
 .cat-buy-btn:disabled,
@@ -269,9 +244,6 @@ border: 2px solid #f5a97f;
   cursor: not-allowed;
 }
 
-/* =====================================================
-   NO PRODUCTS FOUND
-===================================================== */
 .no-product {
   grid-column: 1 / -1;
   text-align: center;
@@ -281,9 +253,6 @@ border: 2px solid #f5a97f;
   justify-self: center;
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
 @media (max-width: 768px) {
   .category-button {
     width: 70px;
@@ -333,4 +302,3 @@ border: 2px solid #f5a97f;
     font-size: 17px;
   }
 }
-
