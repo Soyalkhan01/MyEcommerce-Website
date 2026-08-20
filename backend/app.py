@@ -14,7 +14,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[
+    "https://my-ecommerce-website-gamma.vercel.app"
+])
 
 load_dotenv()
 
