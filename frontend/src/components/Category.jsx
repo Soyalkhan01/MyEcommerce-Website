@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../config";
 import "./Category.css";
-
-const isLocal =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1";
-
-const BASE_URL = isLocal
-  ? "http://127.0.0.1:5000"
-  : "https://my-backend-93up.onrender.com";
 
 const getImageUrl = (prod) => {
   if (prod.images && prod.images.length > 0) {
