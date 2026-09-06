@@ -6,7 +6,7 @@ A modern, responsive, and feature-rich Full Stack E-Commerce Website built using
 
 ## 💻 Live Demo
 
-🌐 **Frontend-URL:** https://mye-commerce-website.onrender.com
+🌐 **Frontend-URL:** https://my-ecommerce-website-gamma.vercel.app/
 
 🔗 **Backend-URL:** https://my-backend-93up.onrender.com
 
